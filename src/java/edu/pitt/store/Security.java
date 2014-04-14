@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import edu.pitt.utilities.DbUtilities;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Security class
@@ -121,5 +123,25 @@ public class Security {
 
         System.out.println("No such manager exist!");
         return null;
+    }
+    
+    
+    public boolean findExistingCustomer(String email) {
+        DbUtilities db = new DbUtilities();
+        try {
+            //select customer by email
+            String sql = "select * from department_store.customer where email = '" + email + "'";
+            ResultSet rs = db.getResultSet(sql);
+            if (rs.next()) {
+                return true;
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            db.closeDbConnection();
+        }
+        return false;
+
     }
 }

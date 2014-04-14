@@ -46,32 +46,155 @@ public class Manager {
         }
     }
     
-    
-    public ArrayList<Order> mgrViewByOrderAggre(String customerCategory, int period, int amount, String orderCondition, String aggreCondition){
-        ArrayList<Order> matchedOrderList = new ArrayList<Order>();
+    //put this method into the view result page
+    //这个方法也写入jsp页面   
+    public void mgrViewByOrderAggre(String customerCategory, int period, int amount, String orderCondition, String aggreCondition){
         String sql = "";
         if(amount==10){
-            sql = "";
-            //where customer.kind=customerCategory 
-            //group by aggreCondition
-            //order by orderCondition
-            //limit 0, 10
+            try {
+                //where customer.kind=customerCategory
+                //group by aggreCondition
+                //order by orderCondition
+                //limit 0, 10
+                sql = "select '"+aggreCondition+"',"+
+                        " sum(quantity) as quantity, "+
+                        "sum(order_detail.price*order_detail.quantity) as total, "+
+                        "sum((order_detail.price-order_detail.cost)*order_detail.quantity) as profit "+
+                        "from department_store.order_detail, department_store.orders, department_store.salesman, "+
+                        "department_store.customer, department_store.store, department_store.product "+
+                        "where orders.orderID = order_detail.orderID "+
+                        "and orders.salesID = salesman.salesID "+
+                        "and orders.customerID = customer.customerID "+
+                        "and salesman.storeID = store.storeID "+
+                        "and order_detail.productID = product.productID "+
+                        "and customer.kind = '"+customerCategory+"' "+
+                        "and orders.date BETWEEN SYSDATE() - INTERVAL '"+period+"' DAY AND SYSDATE() "+
+                        "group by '"+aggreCondition+"' "+
+                        "order by '"+orderCondition+"' DESC "+
+                        "limit 0,10";
+                
+                ResultSet rs = db.getResultSet(sql);
+                while(rs.next()){
+                    if(aggreCondition.contains("ID")){
+                        int aggregationID = rs.getInt("aggreCondition");
+                        int quantity = rs.getInt("quantity");
+                        double total = rs.getDouble("total");
+                        double profit = rs.getDouble("profit");
+                        
+                        
+                        
+                    }else{
+                        String aggregationCondition = rs.getString("aggreCondition");
+                        int quantity = rs.getInt("quantity");
+                        double total = rs.getDouble("total");
+                        double profit = rs.getDouble("profit");
+                        
+                    }
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                db.closeDbConnection();
+            }
+            
             
         }else{
-            sql = "";
-            //where customer.kind=customerCategory 
-            //group by aggreCondition
-            //order by orderCondition
+            
+            try {
+                //where customer.kind=customerCategory
+                //group by aggreCondition
+                //order by orderCondition
+                
+                sql = "select '"+aggreCondition+"', "+
+                        "sum(quantity) as quantity, "+
+                        "sum(order_detail.price*order_detail.quantity) as total, "+
+                        "sum((order_detail.price-order_detail.cost)*order_detail.quantity) as profit "+
+                        "from department_store.order_detail, department_store.orders, department_store.salesman, "+
+                        "department_store.customer, department_store.store, department_store.product "+
+                        "where orders.orderID = order_detail.orderID "+
+                        "and orders.salesID = salesman.salesID "+
+                        "and orders.customerID = customer.customerID "+
+                        "and salesman.storeID = store.storeID "+
+                        "and order_detail.productID = product.productID "+
+                        "and customer.kind = '"+customerCategory+"' "+
+                        "and orders.date BETWEEN SYSDATE() - INTERVAL '"+period+"' DAY AND SYSDATE() "+
+                        "group by '"+aggreCondition+"'"+
+                        "order by '"+orderCondition+"' DESC";
+                
+                ResultSet rs = db.getResultSet(sql);
+                while(rs.next()){
+                    if(aggreCondition.contains("ID")){
+                        int aggregationID = rs.getInt("aggreCondition");
+                        int quantity = rs.getInt("quantity");
+                        double total = rs.getDouble("total");
+                        double profit = rs.getDouble("profit");
+                        
+                        
+                        
+                    }else{
+                        String aggregationCondition = rs.getString("aggreCondition");
+                        int quantity = rs.getInt("quantity");
+                        double total = rs.getDouble("total");
+                        double profit = rs.getDouble("profit");
+                        
+                    }
+                }   
+            } catch (SQLException ex) {
+                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                db.closeDbConnection();
+            }
         }
-        return matchedOrderList;
+    }
+    //这个方法的内容在jsp里写
+    //在while循环里   得到值 然后写入各个column
+    public void mgrViewByOrderProduct(String customerCategory, int period, String productName, String orderCondition){
+        ArrayList<Order> matchedOrderList = new ArrayList<Order>();
+        try {
+            //where customer.kind=customerCategory and product.name=productName
+            //Order by orderCondition
+            String sql = "select orders.customerID, "+
+                    "sum(quantity) as quantity, "+
+                    "sum(order_detail.price*order_detail.quantity) as total, "+
+                    "sum((order_detail.price-order_detail.cost)*order_detail.quantity) as profit "+
+                    "from department_store.order_detail, department_store.orders, "+
+                    "department_store.customer, department_store.product "+
+                    "where orders.orderID = order_detail.orderID "+
+                    "and orders.customerID = customer.customerID "+
+                    "and order_detail.productID = product.productID "+
+                    "and product.name = '"+productName+"' "+
+                    "and customer.kind = '"+customerCategory+"' "+
+                    "and orders.date BETWEEN SYSDATE() - INTERVAL '"+period+"' DAY AND SYSDATE() "+
+                    "group by orders.customerID "+
+                    "order by '"+orderCondition+"' DESC";
+            
+            ResultSet rs = db.getResultSet(sql);
+            while(rs.next()){
+                int customerID = rs.getInt("orders.customerID");
+                int quantity = rs.getInt("quantity");
+                double total = rs.getDouble("total");
+                double profit = rs.getDouble("profit");
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            db.closeDbConnection();
+        }
     }
     
-    public ArrayList<Order> mgrViewByOrderProduct(String customerCategory, int period, String productName, String orderCondition){
-        ArrayList<Order> matchedOrderList = new ArrayList<Order>();
-        String sql = "";
-        //where customer.kind=customerCategory and product.name=productName
-        //Order by orderCondition
-        return matchedOrderList;
+    public void updateInventory(int productID, int inventory){
+        //update product inventory
+        //find product by productID
+        String sql = "UPDATE department_store.product SET inventory='"+inventory+"'"+
+		"WHERE productID = '"+productID+"'";
+        
+        db.executeQuery(sql);
+        
+    }
+    
+    public void addProduct(String name, String category, int inventory, double price, double cost){
+        Product product = new Product(name, category, inventory, price, cost);
     }
 
     public int getManagerID() {

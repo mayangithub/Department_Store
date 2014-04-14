@@ -50,6 +50,19 @@ public class Product {
         }
 
     }
+    
+    
+    public Product(String name, String category, int inventory, double price, double cost){
+        //insert into product table a new product
+        this.name = name;
+        this.category = category;
+        this.inventory = inventory;
+        this.price = price;
+        this.cost = cost;
+        String sql = "INSERT INTO department_store.product (name, category, inventory, price, cost) "+
+        "VALUES ('"+this.name+"', '"+this.category+"', '"+this.inventory+"', '"+this.price+"', '"+this.cost+"')";
+        db.executeQuery(sql);
+    }
 
     public ArrayList<Product> findProductByName(String name) {
         ArrayList<Product> matchedProductList = new ArrayList<Product>();

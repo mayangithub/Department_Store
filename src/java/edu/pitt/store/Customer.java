@@ -46,26 +46,6 @@ public class Customer {
         }
     }
 
-    public Customer(String email) {
-        try {
-            //select customer by email
-            String sql = "select * from department_store.customer where email = '" + email + "'";
-            ResultSet rs = db.getResultSet(sql);
-            while (rs.next()) {
-                this.customerID = rs.getInt("customerID");
-                this.address = rs.getString("address");
-                this.email = rs.getString("email");
-                this.kind = rs.getString("kind");
-                this.name = rs.getString("name");
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            db.closeDbConnection();
-        }
-
-    }
-
     public Customer(String email, String password, String kind, String name, String address) {
         //insert a new customer
         this.email = email;
