@@ -85,9 +85,14 @@ public class Product {
 
     public ArrayList<Product> findProductByCategory(String category) {
         ArrayList<Product> matchedProductList = new ArrayList<Product>();
+        String sql = "";
         try {
             //select product by category
-            String sql = "select * from department_store.product where category = '"+category+"'";
+            if(category.equals("all")){
+                sql = "select * from department_store.product;";
+            }else {
+                sql = "select * from department_store.product where category = '"+category+"'";
+            }
             ResultSet rs = db.getResultSet(sql);
             while(rs.next()){
                 this.productID = rs.getInt("productID");

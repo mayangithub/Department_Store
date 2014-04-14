@@ -8,39 +8,7 @@
 <%@page import="edu.pitt.store.Customer"%>
 <%@page import="edu.pitt.store.Security"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-                String email = "";
-                String password ="";
-                String name = "";
-                String address = "";
-                String gender = "";
-                String marriage = "";
-                int age = 0;
-                int income = 0;
-                
-                    email = request.getParameter("email");
-                    password = request.getParameter("password");
-                    name = request.getParameter("name");
-                    address = request.getParameter("address");
-                    gender = request.getParameter("gender");
-                    age = Integer.parseInt(request.getParameter("age").toString());
-                    marriage = request.getParameter("marriage");
-                    income = Integer.parseInt(request.getParameter("income").toString());
 
-                    Security security = new Security();
-                    if(security.findExistingCustomer(email)){
-                        out.println("<script language='javascript'>alert('You are already a customer. Please Login~')</script>");
-                        response.sendRedirect("login_home_customer.jsp");
-                    }else{
-                        Customer newCustomer = new Customer(email, password, "Home", name, address);
-                        HomeCustomer newHomeCustomer = new HomeCustomer(newCustomer.getCustomerID(), age, gender, marriage, income);
-                        out.println("<script language='javascript'>alert('Congratulations! Registered successfully! Please Login~')</script>");
-                        response.sendRedirect("login_home_customer.jsp");
-                    }
-                
-                
-                
-            %>
 
 <!DOCTYPE html>
 
@@ -67,12 +35,12 @@
                     <input type="radio" name='gender' value="Male"> Male  
                     <input type='radio' name='gender' value="Female"> Female</p><br>
                 <p>Age: 
-                    <input type='text' id='age' name="age" placeholder='Age' value="0"/></p><br>
+                    <input type='number' id='age' name="age" placeholder='Age' min="1" max="100"/></p><br>
                 <p>Marriage Status: 
                     <input type='radio' value='married' name="marriage"> Married   
                     <input type='radio' name='marriage' value="single"> Single</p><br>
                 <p>Income: 
-                    <input type='number' name="income" placeholder="Numeric Value" value=""/></p><br>
+                    <input type='number' name="income" placeholder="Numeric Value" min="1" max="1000000000"/></p><br>
 
                 <br>
                 <button class="btn btn-large" type="submit" value="Submit">Submit</button>
@@ -84,5 +52,57 @@
             </form>
             
         </div>
+        
+        <%
+                String email = null;
+                String password =null;
+                String name = null;
+                String address = null;
+                String gender = null;
+                String marriage = null;
+                int age = 0;
+                int income = 0;
+                
+
+                    Security security = new Security();
+                    
+                     if(request.getParameter("email")!=null && request.getParameter("password")!=null && request.getParameter("name")!=null
+                        &&request.getParameter("address")!=null && request.getParameter("gender")!=null && request.getParameter("age")!=null
+                        &&request.getParameter("marriage")!=null && request.getParameter("income")!=null ){
+                        email = request.getParameter("email");
+                        if(security.findExistingCustomer(email)){
+                            out.println("<script language='javascript'>alert('You are already a customer. Please Login~')</script>");
+                        }else{
+                        password = request.getParameter("password");
+                        name = request.getParameter("name");
+                        address = request.getParameter("address");
+                        gender = request.getParameter("gender");
+                        if(request.getParameter("age").equals("")){
+                            age=1;
+                        }else{
+                            age = Integer.parseInt(request.getParameter("age"));
+                        }
+                        
+                        marriage = request.getParameter("marriage");
+                        if(request.getParameter("income").equals("")){
+                            income=1;
+                        }else{
+                            income = Integer.parseInt(request.getParameter("income"));
+                        }
+                        
+                        Customer newCustomer = new Customer(email, password, "Home", name, address);
+                        int customerID = newCustomer.getCustomerID();
+                        HomeCustomer newHomeCustomer = new HomeCustomer(customerID, age, gender, marriage, income);
+                        System.out.println(newHomeCustomer.getAge());
+                        session.setAttribute("homecustomer", newHomeCustomer);
+                        out.println("<script language='javascript'>alert('Congratulations! Registered successfully! Please Login~')</script>");
+                        }
+                    }else {
+                        out.println("<script language='javascript'>alert('Please fill in all blanks~')</script>");
+                    }
+                
+                
+                
+            %>
     </body>
 </html>

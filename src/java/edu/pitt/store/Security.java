@@ -21,7 +21,7 @@ public class Security {
     private int managerID;
     private String loginEmail;
     private String password;
-    private String type;
+    private String kind;
 
     public HomeCustomer validateHomeCustomerLogin(String loginEmail, String password) {
         this.loginEmail = loginEmail;
@@ -32,8 +32,8 @@ public class Security {
             ResultSet rs = db.getResultSet(sql);
             while (rs.next()) {
                 this.customerID = rs.getInt("customerID");
-                this.type = rs.getString("type");
-                if (this.type.equals("Home")) {
+                this.kind = rs.getString("kind");
+                if (this.kind.equals("Home")) {
                     HomeCustomer authenticatedHomeCustomer = new HomeCustomer(this.customerID);
                     return authenticatedHomeCustomer;
                 }
@@ -59,8 +59,8 @@ public class Security {
             ResultSet rs = db.getResultSet(sql);
             while (rs.next()) {
                 this.customerID = rs.getInt("customerID");
-                this.type = rs.getString("type");
-                if (this.type.equals("Business")) {
+                this.kind = rs.getString("kind");
+                if (this.kind.equals("Business")) {
                     BusinessCustomer authenticatedBusinessCustomer = new BusinessCustomer(this.customerID);
                     return authenticatedBusinessCustomer;
                 }
@@ -130,7 +130,7 @@ public class Security {
         DbUtilities db = new DbUtilities();
         try {
             //select customer by email
-            String sql = "select * from department_store.customer where email = '" + email + "'";
+            String sql = "select * from department_store.customer where email = '" + email + "';";
             ResultSet rs = db.getResultSet(sql);
             if (rs.next()) {
                 return true;

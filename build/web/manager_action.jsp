@@ -4,7 +4,17 @@
     Author     : yanma
 --%>
 
+<%@page import="edu.pitt.store.Manager"%>
+<%@page import="java.util.logging.Logger"%>
+<%@page import="java.util.logging.Level"%>
+<%@page import="java.sql.SQLException"%>
+<%@page import="edu.pitt.utilities.DbUtilities"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="edu.pitt.store.Product"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,6 +32,8 @@
                 <input type="submit" value="Submit Query"  />
             </form>
         </div>
+        <br>
+        
         <br><br>
         <h1 align="center">Add New Product</h1>
         <div align="center">
@@ -40,7 +52,35 @@
                 <p>Cost: <input type="text" name="cost" value="" placeholder="Cost" /></p>
                 <input type="submit" value="Submit Query"  />
             </form>
-        </div>
+        </div><br>
+        <table align='center' border='2'>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Product name</th>
+                    <th>Category</th>
+                    <th>Inventory</th>
+                    <th>Price</th>
+                            <th>Cost</th>
+                </tr>
+        <%
+        
+                
+                  
+                        out.println("<tr>");
+                        out.println("<td>101</td>");
+                        out.println("<td>Queen Dress</td>");
+                        out.println("<td>kids Clothing</td>");
+                        out.println("<td>110</td>");
+                        out.println("<td>30</td>");
+                        out.println("<td>25</td>");
+                        out.println("</tr>");
+                    
+               
+                
+            
+            
+        %>
+        </table>
         <br><br>
         <h1 align="center">Aggregation View For Manager</h1>
         <div align="center">
@@ -82,7 +122,61 @@
                 <br><br>
                 <input type="submit" value="Submit Query" />
             </form>
-        </div>
+        </div><br>
+        <table align="center" border='2'>
+            <tr>
+                <th>Salesman ID</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Profit</th>
+            </tr> 
+            <%
+                        DbUtilities db = new DbUtilities();
+                        
+              String sql = "select orders.salesID,"+
+                        " sum(quantity) as quantity, "+
+                        "sum(order_detail.price*order_detail.quantity) as total, "+
+                        "sum((order_detail.price-order_detail.cost)*order_detail.quantity) as profit "+
+                        "from department_store.order_detail, department_store.orders, department_store.salesman, "+
+                        "department_store.customer, department_store.store, department_store.product "+
+                        "where orders.orderID = order_detail.orderID "+
+                        "and orders.salesID = salesman.salesID "+
+                        "and orders.customerID = customer.customerID "+
+                        "and salesman.storeID = store.storeID "+
+                        "and order_detail.productID = product.productID "+
+                        "and customer.kind = 'Home' "+
+                        "and orders.date BETWEEN SYSDATE() - INTERVAL 60 DAY AND SYSDATE() "+
+                        "group by salesID "+
+                        "order by profit DESC "+
+                        "limit 0,10";
+                try{
+                ResultSet rs = db.getResultSet(sql);
+                while(rs.next()){
+                    
+                        int salesID = rs.getInt("orders.salesID");
+                        int quantity = rs.getInt("quantity");
+                        double total = rs.getDouble("total");
+                        double profit = rs.getDouble("profit");
+                        
+                        out.println("<tr>");
+                        out.println("<td>"+salesID+"</td>");
+                        out.println("<td>"+quantity+"</td>");
+                        out.println("<td>"+total+"</td>");
+                        out.println("<td>"+profit+"</td>");
+                        out.println("</tr>");
+                }
+                }catch (SQLException ex) {
+                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+            
+            
+            %>
+            
+            
+            
+            
+        </table>
+        
         
         <br><br>
         
@@ -114,6 +208,65 @@
                 <input type="submit" value="Submit Query" />
             </form>
         </div>
-        <br><br><br><br><br><br>
+        <br><br>
+        
+        <table border='2' align="center">
+            <tr>
+                <th>Customer ID</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Profit</th>
+            </tr>
+            
+           <%
+               
+            //where customer.kind=customerCategory and product.name=productName
+            //Order by orderCondition
+            sql = "select orders.customerID, "+
+                    "sum(quantity) as quantity, "+
+                    "sum(order_detail.price*order_detail.quantity) as total, "+
+                    "sum((order_detail.price-order_detail.cost)*order_detail.quantity) as profit "+
+                    "from department_store.order_detail, department_store.orders, "+
+                    "department_store.customer, department_store.product "+
+                    "where orders.orderID = order_detail.orderID "+
+                    "and orders.customerID = customer.customerID "+
+                    "and order_detail.productID = product.productID "+
+                    "and product.name = 'nycc' "+
+                    "and customer.kind = 'Home' "+
+                    "and orders.date BETWEEN SYSDATE() - INTERVAL 90 DAY AND SYSDATE() "+
+                    "group by orders.customerID "+
+                    "order by total DESC";
+            
+            ResultSet rs = db.getResultSet(sql);
+            try{
+            while(rs.next()){
+                int customerID = rs.getInt("orders.customerID");
+                int quantity = rs.getInt("quantity");
+                double total = rs.getDouble("total");
+                double profit = rs.getDouble("profit");
+                
+                out.println("<tr>");
+                out.println("<td>"+customerID+"</td>");
+                out.println("<td>"+quantity+"</td>");
+                out.println("<td>"+total+"</td>");
+                out.println("<td>"+profit+"</td>");
+                out.println("</tr>");
+            }
+            } catch (SQLException ex) {
+            Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            db.closeDbConnection();
+        }
+        
+           
+           
+           %>
+            
+            
+            
+        </table>
+        
+        
+        <br><br><br><br>
     </body>
 </html>

@@ -4,8 +4,20 @@
     Author     : yanma
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="edu.pitt.store.Product"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%
+    if(session.getAttribute("homecustomer")==null && session.getAttribute("businessCustomer")==null){
+        response.sendRedirect("index.html");
+    }else if(session.getAttribute("productList")==null){
+        response.sendRedirect("home_customer_action.jsp");
+    }
+    
+    
+    
+%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -24,11 +36,20 @@
                     <th>Inventory</th>
                     <th>Price</th>
                 </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                <%
+                    ArrayList<Product> matchedProductList = new ArrayList<Product>();
+                    matchedProductList = (ArrayList<Product>)session.getAttribute("productList");
+                    for(Product product: matchedProductList){
+                        out.println("<tr>");
+                        out.println("<td>"+product.getProductID()+"</td>");
+                        out.println("<td>"+product.getName()+"</td>");
+                        out.println("<td>"+product.getCategory()+"</td>");
+                        out.println("<td>"+product.getInventory()+"</td>");
+                        out.println("<td>"+product.getPrice()+"</td>");
+                        out.println("</tr>");
+                    }
+                %>
+                
             </table>
         </div>
     </body>

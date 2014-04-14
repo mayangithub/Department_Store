@@ -4,6 +4,8 @@
     Author     : yanma
 --%>
 
+<%@page import="edu.pitt.store.BusinessCustomer"%>
+<%@page import="edu.pitt.store.Security"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -32,5 +34,22 @@
             
             
         </div>
+        
+        <%
+            String email = "";
+            String password = "";
+            session.setAttribute("businesscustomer", null);
+            if(request.getParameter("username")!=null && request.getParameter("password")!=null){
+                email = request.getParameter("username");
+                password = request.getParameter("password");
+                Security security = new Security();
+                BusinessCustomer businessCustomer = security.validateBusinessCustomerLogin(email, password);
+                if(businessCustomer!=null){
+                    session.setAttribute("businessCustomer", businessCustomer);
+                    out.println("<script language='javascript'>alert('Login successfully~')</script>");
+                    response.sendRedirect("business_customer_action.jsp");
+                }
+            }
+        %>
     </body>
 </html>

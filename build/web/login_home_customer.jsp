@@ -4,11 +4,11 @@
     Author     : yanma
 --%>
 
+<%@page import="javax.jms.Session"%>
+<%@page import="edu.pitt.store.HomeCustomer"%>
+<%@page import="edu.pitt.store.Security"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-                
-                //check the username and pwd is or not match with database
-%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -36,5 +36,22 @@
             
             
         </div>
+        <%
+            String email = "";
+            String password = "";
+            if(request.getParameter("username")!=null && request.getParameter("password")!=null){
+                email = request.getParameter("username");
+                password = request.getParameter("password");
+                Security security = new Security();
+                HomeCustomer homeCustomer = security.validateHomeCustomerLogin(email, password);
+                if(homeCustomer!=null){
+                    session.setAttribute("homecustomer", homeCustomer);
+                    out.println("<script language='javascript'>alert('Login successfully~')</script>");
+                    response.sendRedirect("home_customer_action.jsp");
+                }else{
+                    out.println("<script language='javascript'>alert('Login failed.')</script>");
+                }
+            }
+        %>
     </body>
 </html>
