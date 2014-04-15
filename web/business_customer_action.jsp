@@ -20,23 +20,24 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Business Customer Operation Page</title>
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="bootstrap.min.css">
+        <link rel="stylesheet" href="bootstrap-theme.min.css">
     </head>
     <body >
         <h1 align="center">Welcome! For Business Customer:</h1>
         <h3 align="center">Browse product</h3>
-        <div align="center">
-            <p>Category of Products: </p>
-                <form method="get" action="">
-                    <select name="category">
+        <div align="center" >
+            <form method="get" action="" width="50%">
+                <p>Category of Products: </p>
+                
+                    <select name="category" class="col-xs-2">
                         <option value="Men's Clothing">Men's Clothing</option>
                         <option value="Women's Clothing">Women's Clothing</option>
                         <option value="kids Clothing">Kids Clothing</option>
                         <option value="Handbags">Handbags</option>
                         <option value="Shoes">Shoes</option>
                     </select>
-                    <input type="submit" value="Submit Query" />
+                    <input type="submit" value="Submit Query" class="btn btn-default"/>
                 </form>
             
         </div>
@@ -72,10 +73,10 @@
         
         <h3 align="center">Search Product</h3>
         <div align="center">
-            <form method="get" action="">
+            <form method="get" action="" class="form-horizontal">
             <p>Product name:
-                <input type="text" name="productName" placeholder="Product Name"/>（vague search）</p>
-            <input type="submit" value="Submit Query" />
+                <input type="text" name="productName" placeholder="Product Name" class="form-control"/>（vague search）</p>
+            <input type="submit" value="Submit Query" class="btn btn-default"/>
             </form>
         </div>
         <br><br>
@@ -107,10 +108,10 @@
         <br><br><br><br>
         <h3 align="center">Search Product</h3>
         <div align="center">
-            <form method="get" action="">
+            <form method="get" action="" class="form-horizontal">
                 <p>Product ID: 
-                <input type="text" value="" name="productID" placeholder="Product ID" /></p>
-                <input type="submit" value="Submit Query"  />
+                <input type="text" value="" name="productID" placeholder="Product ID" class="form-control"/></p>
+                <input type="submit" value="Submit Query"  class="btn btn-default"/>
             </form>
             
         </div>
@@ -149,17 +150,17 @@
         <div align="center">
             <form method="get" action="" >
                 <p>Time period: 
-                <select name="timePeriod">
+                <select name="timePeriod" class="form-control">
                     <option value="30">30 Days</option>
                     <option value="60">60 Days</option>
                     <option value="90">90 Days</option>
                     <option value="1000"> All </option>
                 </select></p>
                 <p>Product ID: 
-                    <input value="" name="productID" type="text" placeholder="Product ID"/></p>
+                    <input value="" name="productID" type="text" placeholder="Product ID" class="form-control"/></p>
                 <p>Order ID: 
-                    <input type="text" name="orderID" value="" placeholder="Order ID" /></p>
-                <input type="submit" value="Submit Query" />
+                    <input type="text" name="orderID" value="" placeholder="Order ID" class="form-control"/></p>
+                <input type="submit" value="Submit Query" class="btn btn-default"/>
                 
             </form>
         </div>

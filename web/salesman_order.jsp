@@ -12,12 +12,14 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Salesman Order Page</title>
+        <link rel="stylesheet" href="bootstrap.min.css">
+        <link rel="stylesheet" href="bootstrap-theme.min.css">
     </head>
     <body>
         <h1 align="center">Salesman, You can make an order</h1>
         <div align="center" > 
             <form method="post" action="">
-                <table border="2" >
+                <table border="2" class="table table-striped, table table-hover">
                     <tr>
                         <th>Purchase Option</th>
                         <th>Enter</th>
@@ -147,7 +149,7 @@
         <h1 align="center">Order Confirm</h1>
 
 
-        <table border="2" align="center">
+        <table border="2" class="table table-striped, table table-hover">
             <tr>
                 <th>Purchase Option</th>
                 <th>Enter</th>

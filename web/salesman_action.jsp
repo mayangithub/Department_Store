@@ -14,22 +14,23 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Salesman Operation Page</title>
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="bootstrap.min.css">
+        <link rel="stylesheet" href="bootstrap-theme.min.css">
     </head>
     <body>
         <h1 align="center">Browse product</h1>
         <div align="center">
-            <p>Category of Products: </p>
-                <form method="get" action="">
-                    <select name="category">
+            <form method="get" action="">
+            <label>Category of Products: </label>
+                
+                    <select name="category" class="form-control">
                         <option value="Men's Clothing">Men's Clothing</option>
                         <option value="Women's Clothing">Women's Clothing</option>
                         <option value="kids Clothing">Kids Clothing</option>
                         <option value="Handbags">Handbags</option>
                         <option value="Shoes">Shoes</option>
-                    </select>
-                    <input type="submit" value="Submit Query" />
+                    </select><br><br>
+            <input type="submit" value="Submit Query" class="btn btn-default" />
                 </form>
             
         </div>
@@ -70,9 +71,9 @@
         <h1 align="center">Search Product</h1>
         <div align="center">
             <form method="get" action="">
-            <p>Product name:
-                <input type="text" name="productName" placeholder="Product Name"/>（vague search）</p>
-            <input type="submit" value="Submit Query" />
+            <label>Product name:  </label>
+            <input type="text" name="productName" placeholder="Product Name" class="form-control"/>（vague search）<br><br>
+            <input type="submit" value="Submit Query" class="btn btn-default"/>
             </form>
         </div>
         <br><br>
@@ -111,9 +112,9 @@
         <h1 align="center">Search Product</h1>
         <div align="center">
             <form method="get" action="">
-                <p>Product ID: 
-                <input type="text" value="" name="productID" placeholder="Product ID" /></p>
-                <input type="submit" value="Submit Query"  />
+                <label>Product ID: </label>
+                <input type="text" value="" name="productID" placeholder="Product ID" class="form-control"/><br><br>
+                <input type="submit" value="Submit Query"  class="btn btn-default"/>
             </form>
             
         </div>
@@ -153,20 +154,20 @@
         <h1 align="center">Search for Orders</h1>
         <div align="center">
             <form method="get" action="" >
-                <p>Time period: 
-                <select name="timePeriod">
+                <label>Time period: </label>
+                <select name="timePeriod" class="form-control">
                     <option value="30">30 Days</option>
                     <option value="60">60 Days</option>
                     <option value="90">90 Days</option>
                     <option value="1000"> All </option>
-                </select></p>
-                <p>Product ID: 
-                    <input value="" name="productID" type="text" placeholder="Product ID"/></p>
-                <p>Order ID: 
-                    <input type="text" name="orderID" value="" placeholder="Order ID" /></p>
-                <p>Customer ID: 
-                    <input type="text" name="customerID" value="" placeholder="Customer ID" /></p>
-                <input type="submit" value="Submit Query" />
+                </select><br><br>
+                <label>Product ID: </label>
+                <input value="" name="productID" type="text" placeholder="Product ID" class="form-control"/><br><br>
+                <label>Order ID: </label>
+                <input type="text" name="orderID" value="" placeholder="Order ID" class="form-control"/><br><br>
+                <label>Customer ID: </label>
+                <input type="text" name="customerID" value="" placeholder="Customer ID" class="form-control"/><br><br>
+                <input type="submit" value="Submit Query" class="btn btn-default"/>
                 
             </form>
         </div>

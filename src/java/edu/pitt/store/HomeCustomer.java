@@ -29,7 +29,7 @@ public class HomeCustomer {
     public HomeCustomer(int customerID){
         try {
             //select customer by customerID
-            String sql = "select * from department_store.home_customer where customerID = '"+customerID+"'";
+            String sql = "select * from department_store.home_customer where customerID = "+customerID+"";
             ResultSet rs = db.getResultSet(sql);
             while(rs.next()){
                 this.customerID = rs.getInt("customerID");
@@ -55,8 +55,8 @@ public class HomeCustomer {
         this.marriage = marriage;
         this.income = income;
         
-        String sql = "INSERT INTO department_store.home_customer (customerID, age, gender, marriage, income) VALUES ('"
-                +this.customerID+"', '"+this.age+"', '"+this.gender+"', '"+this.marriage+"', '"+this.income+"')";
+        String sql = "INSERT INTO department_store.home_customer (customerID, age, gender, marriage, income) VALUES ("
+                +this.customerID+", "+this.age+", '"+this.gender+"', '"+this.marriage+"', "+this.income+")";
         db.executeQuery(sql);
                 
     }

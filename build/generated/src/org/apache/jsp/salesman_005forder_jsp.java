@@ -53,12 +53,14 @@ public final class salesman_005forder_jsp extends org.apache.jasper.runtime.Http
       out.write("    <head>\n");
       out.write("        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n");
       out.write("        <title>Salesman Order Page</title>\n");
+      out.write("        <link rel=\"stylesheet\" href=\"bootstrap.min.css\">\n");
+      out.write("        <link rel=\"stylesheet\" href=\"bootstrap-theme.min.css\">\n");
       out.write("    </head>\n");
       out.write("    <body>\n");
       out.write("        <h1 align=\"center\">Salesman, You can make an order</h1>\n");
       out.write("        <div align=\"center\" > \n");
       out.write("            <form method=\"post\" action=\"\">\n");
-      out.write("                <table border=\"2\" >\n");
+      out.write("                <table border=\"2\" class=\"table table-striped, table table-hover\">\n");
       out.write("                    <tr>\n");
       out.write("                        <th>Purchase Option</th>\n");
       out.write("                        <th>Enter</th>\n");
@@ -190,7 +192,7 @@ public final class salesman_005forder_jsp extends org.apache.jasper.runtime.Http
       out.write("        <h1 align=\"center\">Order Confirm</h1>\n");
       out.write("\n");
       out.write("\n");
-      out.write("        <table border=\"2\" align=\"center\">\n");
+      out.write("        <table border=\"2\" class=\"table table-striped, table table-hover\">\n");
       out.write("            <tr>\n");
       out.write("                <th>Purchase Option</th>\n");
       out.write("                <th>Enter</th>\n");
