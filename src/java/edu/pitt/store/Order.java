@@ -36,10 +36,10 @@ public class Order {
             //select from both orders and order_details database
             String sql = "select orders.orderID as order_ID, orders.date as order_date, order_detail.productID as product_ID,"+
             " order_detail.price as price, order_detail.cost as cost, order_detail.quantity as quantity, "+
-            "orders.salesID as salesman_ID, orders.customerID as customer_ID"+
-            "from department_store.orders, department_store.order_detail"+
-            "where orders.orderID = '"+orderID+"'"+
-            "and orders.orderID = order_detail.orderID"+
+            "orders.salesID as salesman_ID, orders.customerID as customer_ID "+
+            "from department_store.orders, department_store.order_detail "+
+            "where orders.orderID = "+orderID+" "+
+            "and orders.orderID = order_detail.orderID "+
             "order by date DESC";          
             
             ResultSet rs = db.getResultSet(sql);

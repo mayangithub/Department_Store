@@ -8,6 +8,11 @@
 <%@page import="edu.pitt.store.Product"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%
+    if(session.getAttribute("salesman")==null){
+        response.sendRedirect("login_salesman.jsp");
+    }
+%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

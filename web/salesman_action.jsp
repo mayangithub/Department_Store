@@ -4,11 +4,17 @@
     Author     : yanma
 --%>
 
+<%@page import="edu.pitt.store.Salesman"%>
 <%@page import="java.util.Date"%>
 <%@page import="edu.pitt.store.Product"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="edu.pitt.utilities.DbUtilities"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    if(session.getAttribute("salesman")==null){
+        response.sendRedirect("login_salesman.jsp");
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -23,7 +29,7 @@
             <form method="get" action="">
             <label>Category of Products: </label>
                 
-                    <select name="category" class="form-control">
+            <select name="category" class="form-control" required>
                         <option value="Men's Clothing">Men's Clothing</option>
                         <option value="Women's Clothing">Women's Clothing</option>
                         <option value="kids Clothing">Kids Clothing</option>
@@ -36,9 +42,11 @@
         </div>
         <br><br>
         <%
-             String sql = "select * from department_store.product where category = 'Handbags'";
-            DbUtilities db = new DbUtilities();
-            ResultSet rs = db.getResultSet(sql);
+            Salesman salesman =(Salesman) session.getAttribute("salesman");
+            String category = request.getParameter("category");
+            
+            
+            
             out.println("<table align='center' border='2'>");
                 out.println("<tr>");
                 out.println("<th>Product ID</th>");   
@@ -48,9 +56,8 @@
                 out.println("<th>Price</th>");
                 out.println("<th>Cost</th>");
                 out.println("</tr>");
-            while(rs.next()){
-                int productID = rs.getInt("productID");
-                Product product = new Product(productID);
+            
+                
                 out.println("<tr>");
                 out.println("<td>"+product.getProductID()+"</td>");
                 out.println("<td>"+product.getName()+"</td>");
@@ -60,7 +67,6 @@
                 out.println("<td>"+product.getCost()+"</td>");
                 out.println("</tr>");
                 
-            }
             out.println("</table>");
         
         
@@ -222,6 +228,14 @@
             
             
         %>
+        <br><br><br><br><br><br><br>
+        
+        <h1 align="center">Make an Order</h1>
+        <div align="center">
+            <a href="salesman_order.jsp">
+                        <button class="btn btn-large" type="button">Salesman, you can order here~</button>
+            </a>
+        </div>
         <br><br><br><br><br><br><br>
     </body>
 </html>

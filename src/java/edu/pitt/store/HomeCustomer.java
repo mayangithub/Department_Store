@@ -28,6 +28,7 @@ public class HomeCustomer {
     
     public HomeCustomer(int customerID){
         try {
+            db = new DbUtilities();
             //select customer by customerID
             String sql = "select * from department_store.home_customer where customerID = "+customerID+"";
             ResultSet rs = db.getResultSet(sql);
@@ -54,7 +55,7 @@ public class HomeCustomer {
         this.gender = gender;
         this.marriage = marriage;
         this.income = income;
-        
+        db = new DbUtilities();
         String sql = "INSERT INTO department_store.home_customer (customerID, age, gender, marriage, income) VALUES ("
                 +this.customerID+", "+this.age+", '"+this.gender+"', '"+this.marriage+"', "+this.income+")";
         db.executeQuery(sql);
@@ -62,45 +63,9 @@ public class HomeCustomer {
     }
     
     
-    public ArrayList<Product> findProductByCategory(String category) {
-        ArrayList<Product> matchedProductList = new ArrayList<Product>();
-        String sql = "";
-        try {
-            //select product by category
-            if(category.equals("all")){
-                sql = "select * from department_store.product";
-            }else if(category.contains("Men")){
-                sql = "SELECT * FROM department_store.product where category=\"Men's Clothing\"";
-            }else if(category.contains("Women")){
-                sql = "SELECT * FROM department_store.product where category=\"Women's Clothing\"";
-            }else if(category.contains("kids")){
-                sql="SELECT * FROM department_store.product where category='kids Clothing';";
-            }else if(category.contains("Handbags")){
-                sql="SELECT * FROM department_store.product where category='Handbags'";
-            }else {
-                sql="SELECT * FROM department_store.product where category='Shoes'";
-            }
-                            
-            ResultSet rs = db.getResultSet(sql);
-            while(rs.next()){
-                int productID = rs.getInt("productID");
-                System.out.println("------"+productID+"--------");
-                Product product = new Product(productID);
-                matchedProductList.add(product);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Product.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            db.closeDbConnection();
-        }
-        return matchedProductList;
-
-    }
-    
-    
-    
     public ArrayList<Product> findProductByName(String name) {
         ArrayList<Product> matchedProductList = new ArrayList<Product>();
+        db = new DbUtilities();
         try {
             //select product by name
             String sql = "select * from department_store.product where name like '%" + name + "%'";

@@ -29,6 +29,7 @@ public class Customer {
     DbUtilities db = new DbUtilities();
 
     public Customer(int customerID) {
+        db = new DbUtilities();
         try {
             //select customer by customerID
             String sql = "select * from department_store.customer where customerID = '" + customerID + "'";
@@ -53,24 +54,55 @@ public class Customer {
         this.kind = kind;
         this.name = name;
         this.address = address;
+        db = new DbUtilities();
         String sql = "INSERT INTO customer (email, password, kind, name, address) VALUES ('"
                 + this.email + "', '" + this.password + "', '" + this.kind + "', '" + this.name + "', '" + this.address + "')";
         db.executeQuery(sql);
     }
-
-    public ArrayList<Order> customerFindOrderByDatePeriod(int customerID, int period) {
+    
+    
+    public ArrayList<Order> customerFindOrder(int customerID, int period, int productID, int orderID) {
         ArrayList<Order> matchedOrderList = new ArrayList<Order>();
         try {
-            //select by customerID and period time
-            String sql = "select orders.orderID as order_ID, orders.date as order_date, order_detail.productID as product_ID,"
-                    + " order_detail.price as price, order_detail.cost as cost, order_detail.quantity as quantity, "
-                    + "orders.salesID as salesman_ID, orders.customerID as customer_ID"
-                    + "from department_store.orders, department_store.order_detail"
-                    + "where orders.customerID = '" + customerID + "'"
-                    + "and date BETWEEN SYSDATE() - INTERVAL '" + period + "' DAY AND SYSDATE()"
-                    + "and orders.orderID = order_detail.orderID"
-                    + "order by date DESC";
+            db = new DbUtilities();
+            String sql="";
+            if(orderID!=0){
+                sql = "select orders.orderID as order_ID, orders.date as order_date, order_detail.productID as product_ID, " +
+                    "order_detail.price as price, order_detail.cost as cost, order_detail.quantity as quantity, " +
+                    "orders.salesID as salesman_ID, orders.customerID as customer_ID " +
+                    "from department_store.orders, department_store.order_detail " +
+                    "where orders.customerID = "+customerID+" and orders.orderID = "+orderID+" and orders.orderID = order_detail.orderID " +
+                    "order by date DESC;";
+            }else{
+                if(productID==0){
+                    sql = "select orders.orderID as order_ID, orders.date as order_date, order_detail.productID as product_ID, " +
+                          "order_detail.price as price, order_detail.cost as cost, order_detail.quantity as quantity, " +
+                          "orders.salesID as salesman_ID, orders.customerID as customer_ID " +
+                          "from department_store.orders, department_store.order_detail " +
+                          "where orders.customerID = "+customerID+" and date BETWEEN SYSDATE() - INTERVAL "+period+" DAY AND SYSDATE() " +
+                          "and orders.orderID = order_detail.orderID " +
+                          "order by date DESC;";
+                }else{
+                    sql = "select orders.orderID as order_ID, orders.date as order_date, order_detail.productID as product_ID, " +
+                    "order_detail.price as price, order_detail.cost as cost, order_detail.quantity as quantity, " +
+                    "orders.salesID as salesman_ID, orders.customerID as customer_ID " +
+                    "from department_store.orders, department_store.order_detail " +
+                    "where orders.customerID = "+customerID + " and order_detail.productID= "+productID + " and date BETWEEN SYSDATE() - INTERVAL "+period+" DAY AND SYSDATE() " +
+                    "and orders.orderID = order_detail.orderID order by date DESC";
+                }
+                
+               
+            }
+            System.out.println(sql);
+                
+            
             ResultSet rs = db.getResultSet(sql);
+            while (rs.next()) {
+                orderID = rs.getInt("order_ID");
+                System.out.println(orderID);
+                Order order = new Order(orderID);
+                matchedOrderList.add(order);
+            }
             
         } catch (SQLException ex) {
             Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex);
@@ -79,63 +111,37 @@ public class Customer {
         }
         return matchedOrderList;
     }
-
-    public ArrayList<Order> customerFindOrderByProductID(int customerID, int productID, int period) {
-        ArrayList<Order> matchedOrderList = new ArrayList<Order>();
+            
+    
+    
+    public ArrayList<Product> customerFindProductByCategory(String category){
+        ArrayList<Product> productList = new ArrayList<Product>();
+        db = new DbUtilities();
+        String sql;
         try {
-            //select by customerID, period time and productID
-            String sql = "select orders.orderID as order_ID, orders.date as order_date, order_detail.productID as product_ID, "
-                    + "order_detail.price as price, order_detail.cost as cost, order_detail.quantity as quantity, "
-                    + "orders.salesID as salesman_ID, orders.customerID as customer_ID"
-                    + "from department_store.orders, department_store.order_detail"
-                    + "where orders.customerID = '" + customerID + "'"
-                    + "and order_detail.productID= '" + productID + "'"
-                    + "and date BETWEEN SYSDATE() - INTERVAL '" + period + "' DAY AND SYSDATE()"
-                    + "and orders.orderID = order_detail.orderID"
-                    + "order by date DESC";
-            ResultSet rs = db.getResultSet(sql);
-            while (rs.next()) {
-                int orderID = rs.getInt("order_ID");
-                Order order = new Order(orderID);
-                matchedOrderList.add(order);
+            if(category.equals("all")){
+                sql = "select * from department_store.product ";
+            }else{
+                sql = "select * from department_store.product where category = \""+category+"\"";
             }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(Order.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            db.closeDbConnection();
-        }
-        return matchedOrderList;
-    }
-
-    public ArrayList<Order> customerFindOrderByOrderID(int customerID, int orderID) {
-        ArrayList<Order> matchedOrderList = new ArrayList<Order>();
-        try {
-            //select by customerID, period time, and orderID
-            String sql = "select orders.orderID as order_ID, orders.date as order_date, order_detail.productID as product_ID, "
-                    + "order_detail.price as price, order_detail.cost as cost, order_detail.quantity as quantity, "
-                    + "orders.salesID as salesman_ID, orders.customerID as customer_ID"
-                    + "from department_store.orders, department_store.order_detail"
-                    + "where orders.customerID = '" + customerID + "'"
-                    + "and orders.orderID = '" + orderID + "'"
-                    + "and orders.orderID = order_detail.orderID"
-                    + "order by date DESC";
-
+            
             ResultSet rs = db.getResultSet(sql);
-            while (rs.next()) {
-                Order order = new Order(orderID);
-                matchedOrderList.add(order);
+            while(rs.next()){
+                int productID = rs.getInt("productID");
+                Product product = new Product(productID);
+                productList.add(product);
             }
-
         } catch (SQLException ex) {
             Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             db.closeDbConnection();
         }
-        return matchedOrderList;
+        return productList;
     }
+    
 
     public int getCustomerID() {
+        
         return customerID;
     }
 

@@ -7,6 +7,12 @@
 <%@page import="edu.pitt.store.BusinessCustomer"%>
 <%@page import="edu.pitt.store.Security"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    if(session.getAttribute("businesscustomer")!=null){
+        response.sendRedirect("business_customer_action.jsp?");
+    }
+%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -39,6 +45,7 @@
             String email = "";
             String password = "";
             session.setAttribute("businesscustomer", null);
+            session.setAttribute("customerID", null);
             if(request.getParameter("username")!=null && request.getParameter("password")!=null){
                 email = request.getParameter("username");
                 password = request.getParameter("password");
@@ -46,10 +53,23 @@
                 BusinessCustomer businessCustomer = security.validateBusinessCustomerLogin(email, password);
                 if(businessCustomer!=null){
                     session.setAttribute("businessCustomer", businessCustomer);
+                    int customerID = security.findCustomerByEmail(email);
+                    session.setAttribute("customerID", customerID);
                     out.println("<script language='javascript'>alert('Login successfully~')</script>");
                     response.sendRedirect("business_customer_action.jsp");
+                }else{
+                    out.println("<script language='javascript'>alert('Login failed.')</script>");
                 }
             }
         %>
+            <br><br>
+            <div align="center">
+            <a href="index.html">
+                <button class="btn btn-large" type="button">Back to Main Page~</button>
+            </a>
+            </div>
+            
+            <br><br>
+        
     </body>
 </html>

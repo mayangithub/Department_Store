@@ -4,8 +4,13 @@
     Author     : yanma
 --%>
 
+<%@page import="edu.pitt.store.Manager"%>
+<%@page import="edu.pitt.store.Security"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%
+    session.setAttribute("manager", null);
+    session.setAttribute("managerID", null);
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -20,9 +25,9 @@
         <div align="center">
             <form method="post" action="login_manager.jsp">
                 <p>Email: 
-                <input type="email" id="username" name="username" placeholder="mail@domain.com" /></p><br>
+                <input type="email" id="username" name="username" placeholder="mail@domain.com" required/></p><br>
                 <p>Password: 
-                <input type="password" id="password" name="password" placeholder="Password" /></p><br>
+                    <input type="password" id="password" name="password" placeholder="Password" required /></p><br>
 
                 <br>
                 <button class="btn btn-large" type="submit" value="Submit">Submit</button>
@@ -33,5 +38,40 @@
             
             
         </div>
+        
+        
+        <%
+        
+            String email = "";
+            String password = "";
+            
+            if(request.getParameter("username")!=null && request.getParameter("password")!=null){
+                email = request.getParameter("username");
+                password = request.getParameter("password");
+                Security security = new Security();
+                Manager manager = security.validateManagerLogin(email, password);
+                if(manager!=null){
+                    session.setAttribute("manager", manager);
+                    int managerID = security.findManagerByEmail(email);
+                    session.setAttribute("managerID", managerID);
+                    out.println("<script language='javascript'>alert('Login successfully~')</script>");
+                    response.sendRedirect("manager_action.jsp");
+                }else{
+                    out.println("<script language='javascript'>alert('Login failed.')</script>");
+                }
+            }
+        
+        
+        %>
+        
+            <br><br>
+            <div align="center">
+            <a href="index.html">
+                <button class="btn btn-large" type="button">Back to Main Page~</button>
+            </a>
+            </div>
+            
+            <br><br>
+        
     </body>
 </html>

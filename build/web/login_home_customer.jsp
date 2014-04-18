@@ -8,7 +8,11 @@
 <%@page import="edu.pitt.store.HomeCustomer"%>
 <%@page import="edu.pitt.store.Security"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%
+    if(session.getAttribute("homecustomer")!=null){
+        response.sendRedirect("home_customer_action.jsp?");
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -23,9 +27,9 @@
         <div align="center">
             <form method="post" action="login_home_customer.jsp">
                 <p>Email: 
-                <input type="email" id="username" name="username" placeholder="mail@domain.com" /></p><br>
+                <input type="email" id="username" name="username" placeholder="mail@domain.com" required/></p><br>
                 <p>Password: 
-                <input type="password" id="password" name="password" placeholder="Password" /></p><br>
+                <input type="password" id="password" name="password" placeholder="Password" required/></p><br>
 
                 <br>
                 <button class="btn btn-large" type="submit" value="Submit">Submit</button>
@@ -39,6 +43,8 @@
         <%
             String email = "";
             String password = "";
+            session.setAttribute("homecustomer", null);
+            session.setAttribute("customerID", null);
             if(request.getParameter("username")!=null && request.getParameter("password")!=null){
                 email = request.getParameter("username");
                 password = request.getParameter("password");
@@ -46,12 +52,23 @@
                 HomeCustomer homeCustomer = security.validateHomeCustomerLogin(email, password);
                 if(homeCustomer!=null){
                     session.setAttribute("homecustomer", homeCustomer);
+                    int customerID = security.findCustomerByEmail(email);
+                    session.setAttribute("customerID", customerID);
                     out.println("<script language='javascript'>alert('Login successfully~')</script>");
-                    response.sendRedirect("home_customer_action.jsp");
+                    response.sendRedirect("home_customer_action.jsp?");
                 }else{
                     out.println("<script language='javascript'>alert('Login failed.')</script>");
                 }
             }
         %>
+            <br><br>
+            <div align="center">
+            <a href="index.html">
+                <button class="btn btn-large" type="button">Back to Main Page~</button>
+            </a>
+            </div>
+            
+            <br><br>
+        
     </body>
 </html>

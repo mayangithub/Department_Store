@@ -144,4 +144,75 @@ public class Security {
         return false;
 
     }
+    
+    
+    
+    
+    
+    public int findCustomerByEmail(String email){
+         DbUtilities db = new DbUtilities();
+        try {
+            
+            String sql = "SELECT customerID FROM department_store.customer WHERE email = '"+email+"'";
+            ResultSet rs = db.getResultSet(sql);
+            if(rs.next()){
+                int customerid = rs.getInt("customerID");
+                
+                return customerid;
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            db.closeDbConnection();
+        }
+        
+        return 0;
+    }
+    
+    public int findSalesmanByEmail(String email){
+         DbUtilities db = new DbUtilities();
+        try {
+            
+            String sql = "SELECT salesID FROM department_store.salesman WHERE email = '"+email+"'";
+            ResultSet rs = db.getResultSet(sql);
+            if(rs.next()){
+                int customerid = rs.getInt("salesID");
+                
+                return customerid;
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Salesman.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            db.closeDbConnection();
+        }
+        
+        return 0;
+    }
+     
+     
+     
+     
+    public int findManagerByEmail(String email){
+         DbUtilities db = new DbUtilities();
+        try {
+            
+            String sql = "SELECT managerID FROM department_store.manager WHERE email = '"+email+"'";
+            ResultSet rs = db.getResultSet(sql);
+            if(rs.next()){
+                int customerid = rs.getInt("managerID");
+                
+                return customerid;
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            db.closeDbConnection();
+        }
+        
+        return 0;
+    }
+     
 }
