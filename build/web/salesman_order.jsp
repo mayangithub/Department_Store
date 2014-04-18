@@ -4,6 +4,7 @@
     Author     : yanma
 --%>
 
+<%@page import="edu.pitt.store.Salesman"%>
 <%@page import="edu.pitt.store.Order"%>
 <%@page import="edu.pitt.store.Product"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -31,158 +32,89 @@
                     </tr>
                     <tr>
                         <td>Product ID</td>
-                        <td><input type="text" value="" name="productID" placeholder="Product ID" /></td>
+                        <td><input type="number" required name="productID" placeholder="Product ID" /></td>
                     </tr>
                     <tr>
                         <td>Quantity</td>
-                        <td><input type="number" min="1" name="quantity" placeholder="Numeric Amount" /></td>
+                        <td><input type="number" min="1" name="quantity" placeholder="Numeric Amount" required/></td>
                     </tr>
                     <tr>
                         <td>Customer ID</td>
-                        <td><input type="text" value="" name="customerID" placeholder="Customer ID" /></td>
+                        <td><input type="number" required name="customerID" placeholder="Customer ID" /></td>
                     </tr>
                     <tr>
                         <td>Salesman ID</td>
-                        <td><input type="text" value="" name="salesmanID" placeholder="Salesman ID" /></td>
+                        <td><%=((Salesman) session.getAttribute("salesman")).getSalesID()%></td>
                     </tr>
                 </table>
                 <br>
                 <input type="submit" value="Submit Order" />
             </form>
         </div>
+        <br><br>
         <%
-            /*
-
-                if (request.getParameter("quantity") != null && request.getParameter("customerID") != null) {
+            if(session.getAttribute("salesman")!=null){
+                if(request.getParameter("productID")!=null && request.getParameter("quantity")!=null && request.getParameter("customerID")!=null 
+                        && session.getAttribute("salesman")!=null){
+                    int productID = Integer.parseInt(request.getParameter("productID"));
+                    Product product = new Product(productID);
                     int quantity = Integer.parseInt(request.getParameter("quantity"));
-                    if (request.getParameter("productID") != null) {
-                        int productID = Integer.parseInt(request.getParameter("productID"));
-                        Product product = new Product(productID);
-                        if (quantity < product.getInventory()) {
-                            out.println("<script language='javascript'>alert('Inventory is less than your quantity. Please order less.')</script>");
-                        } else {
-                            int salesID = 20;
-                            int customerID = Integer.parseInt(request.getParameter("customerID"));
-                            Order order = new Order(customerID, salesID);
-                            double price = product.getPrice();
-                            double cost = product.getCost();
-                            Order newOrder = new Order(order.getOrderID(), productID, quantity, price, cost);
+                    if(product.getInventory()<quantity){
+                        out.println("<script language='javascript'>alert('Inventory not enough.')</script>");
+                    }else{
+                        int customerID = Integer.parseInt(request.getParameter("customerID"));
+                        int salesID = ((Salesman) session.getAttribute("salesman")).getSalesID();
+                        session.setAttribute("salesID", salesID);
+                        Salesman salesman = (Salesman) session.getAttribute("salesman");
+                        salesman.placeOrder(salesID, productID, customerID, quantity);
 
-                            out.println("<table align='center' border='2'>");
-                            out.println("<tr>");
-                            out.println("<th>Order ID</th>");
-                            out.println("<th>Product ID</th>");
-                            out.println("<th>Quantity</th>");
-                            out.println("<th>Customer ID</th>");
-                            out.println("<th>Salesman ID</th>");
-                            out.println("<th>Price</th>");
-                            out.println("<th>Cost</th>");
-                            out.println("</tr>");
 
-                            out.println("<tr>");
-                            out.println("<td>" + order.getOrderID() + "</td>");
-                            out.println("<td>" + product.getProductID() + "</td>");
-                            out.println("<td>" + order.getQuantity() + "</td>");
-                            out.println("<td>" + order.getCustomerID() + "</td>");
-                            out.println("<td>" + order.getSalesID() + "</td>");
-                            out.println("<td>" + newOrder.getPrice() + "</td>");
-                            out.println("<td>" + newOrder.getCost() + "</td>");
-                            out.println("</tr>");
-
-                        }
+                        out.println("<table border='2'  align = 'center' class='table table-striped, table table-hover'>");
+                        out.println("<tr>");
+                        out.println("<th>Purchase Option</th>");
+                        out.println("<th>Enter</th>");
+                        out.println("</tr><tr><td>Product ID</td>");
+                        out.println("<td>"+productID+"</td></tr><tr>");
+                        out.println("<td>Quantity</td><td>"+quantity+"</td></tr>");
+                        out.println("<tr><td>Customer ID</td><td>"+customerID+"</td></tr><tr>");
+                        out.println("<td>Salesman ID</td>");
+                        out.println("<td>"+salesID+"</td></tr></table>");
                     }
-
-                }
-
-            }
                     
-                    */
-
-            
-            
-            
-            
-            
-            
-                    int quantity = 50;
-                    int customerID = 163;
-                    int productID = 75;
-                        Product product = new Product(productID);
-                        int inventory = product.getInventory();
-                        out.println(inventory);
-                        
-                            out.println("<script language='javascript'>alert('Inventory is less than your quantity. Please order less.')</script>");
-                         /*else {
-                            int salesID = 20;
-                            Order order = new Order(customerID, salesID);
-                            double price = product.getPrice();
-                            double cost = product.getCost();
-                            Order newOrder = new Order(order.getOrderID(), productID, quantity, price, cost);
-
-                            out.println("<table align='center' border='2'>");
-                            out.println("<tr>");
-                            out.println("<th>Order ID</th>");
-                            out.println("<th>Product ID</th>");
-                            out.println("<th>Quantity</th>");
-                            out.println("<th>Customer ID</th>");
-                            out.println("<th>Salesman ID</th>");
-                            out.println("<th>Price</th>");
-                            out.println("<th>Cost</th>");
-                            out.println("</tr>");
-
-                            out.println("<tr>");
-                            out.println("<td>" + order.getOrderID() + "</td>");
-                            out.println("<td>" + product.getProductID() + "</td>");
-                            out.println("<td>" + order.getQuantity() + "</td>");
-                            out.println("<td>" + order.getCustomerID() + "</td>");
-                            out.println("<td>" + order.getSalesID() + "</td>");
-                            out.println("<td>" + newOrder.getPrice() + "</td>");
-                            out.println("<td>" + newOrder.getCost() + "</td>");
-                            out.println("</tr>");
-
-                        }
-                                
+                    if(product.getInventory()<100){
+                        out.println("<script language='javascript'>alert('Inventory less than 100.')</script>");
                     }
-*/
+                    
+                    
+                }
                 
-
+                
+            }
             
+        
 
         %>
-        <br>
-        <br>
-        <h1 align="center">Order Confirm</h1>
-
-
-        <table border="2" class="table table-striped, table table-hover">
-            <tr>
-                <th>Purchase Option</th>
-                <th>Enter</th>
-            </tr>
-            <tr>
-                <td>Product ID</td>
-                <td>48</td>
-            </tr>
-            <tr>
-                <td>Quantity</td>
-                <td>3</td>
-            </tr>
-            <tr>
-                <td>Customer ID</td>
-                <td>2000</td>
-            </tr>
-            <tr>
-                <td>Salesman ID</td>
-                <td>10</td>
-            </tr>
-        </table>
-
-        <%            out.println (
-        "<script language='javascript'>alert('The inventory of this product is less than 100.')</script>");
-        %>
-
-
-
+        
+            <br><br>
+            <div align="center">
+            <a href="index.html">
+                <button class="btn btn-large" type="button">Back to Main Page~</button>
+            </a>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                
+            
+            <a href="salesman_action.jsp">
+                <button class="btn btn-large" type="button">Back to Salesman Search Page~</button>
+            </a>&nbsp;&nbsp;&nbsp;&nbsp;
+            
+            <a href="login_salesman.jsp">
+                <button class="btn btn-large" type="button">Back to Login Page~</button>
+            </a>
+                </div>
+            <br><br>
+            
+            
+            <br><br>
 
 
 

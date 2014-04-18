@@ -22,22 +22,22 @@
         <link rel="stylesheet" href="bootstrap-theme.min.css">
     </head>
     <body>
-        <h1 align="center">Welcome! For Home Customer:</h1>
+        <h1>Welcome! For Home Customer:</h1>
         <!---------------Search Orders by Time Period, Product ID, or Order ID ---------------------->
         <h3 align="center">Search for Orders</h3>
         <div align="center">
             <form method="get" action="home_customer_searchorder.jsp" >
                 <label>Time period: </label>
                 <select name="timePeriod" class="form-control">
-                    <option value="1000" selected="selected"> All Orders</option>
-                    <option value="30">Last 30 Days</option>
-                    <option value="60">Last 60 Days</option>
-                    <option value="90">Last 90 Days</option>
+                    <option value="1000" selected="selected"> All Orders </option>
+                    <option value="30"> Last 30 Days </option>
+                    <option value="60"> Last 60 Days </option>
+                    <option value="90"> Last 90 Days </option>
                 </select><br><br>
                 <label>Product ID: 
-                    <input name="productID" type="number" placeholder="Product ID" /></label><br><br>
+                    <input name="productID" type="number" placeholder="Product ID" value="0" required/></label><br><br>
                 <label>Order ID: 
-                    <input type="text" name="orderID" placeholder="Order ID" /></label><br><br>
+                    <input type="text" name="orderID" placeholder="Order ID"  value="0" required/></label><br><br>
                 <input type="submit" value="Submit Query" class="btn btn-default" />
                 
             </form>
@@ -48,28 +48,24 @@
                 int orderID = 0;
                 if(session.getAttribute("customerID")!=null){
                     int customerID = Integer.parseInt(session.getAttribute("customerID").toString());
-                    System.out.println(customerID);
+                    System.out.println("customerID: "+customerID);
                     if(customerID!=0){
                         Customer customer = new Customer(customerID);
                         ArrayList<Order> orderList = new ArrayList<Order>();
-                            if(request.getParameter("orderID").equals("")){
-                                System.out.println("OrderID"+orderID);
-                                if(request.getParameter("timePeriod")!=null){
-                                    period = Integer.parseInt(request.getParameter("timePeriod").toString());
-                                    System.out.println("Period"+period);
-                                    if(request.getParameter("productID").equals("")){
-                                        productID = 0;
-                                    }else{
-                                        productID = Integer.parseInt(request.getParameter("productID"));
-                                        System.out.println("productID"+productID);
-                                    }
-                                }
-                            }else{
-                                System.out.println("orderID"+request.getParameter("orderID"));
+                            if(request.getParameter("orderID")!=null ){
                                 orderID = Integer.parseInt(request.getParameter("orderID"));
-                                period=1000;
-                                productID = 0;
+                                System.out.println("orderID: "+orderID);
                             }
+                            if(request.getParameter("timePeriod")!=null){
+                                period = Integer.parseInt(request.getParameter("timePeriod"));
+                                System.out.println("Period: "+period);
+                            }
+                            if(request.getParameter("productID")!=null){
+                                productID = Integer.parseInt(request.getParameter("productID"));
+                                System.out.println("productID"+productID);
+                            }
+                                
+                            
 
                         if(customer.customerFindOrder(customerID, period, productID, orderID)!=null){
                             orderList = customer.customerFindOrder(customerID, period, productID, orderID);
@@ -104,5 +100,20 @@
            
             
         %>
+        
+        
+        <br><br>
+        <div align="center">
+            <a href="index.html">
+                <button class="btn btn-large" type="button">Back to Main Page~</button>
+            </a>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            
+            <a href="login_home_customer.jsp">
+                        <button class="btn btn-large" type="button">Back to Login Page~</button>
+            </a>
+        </div>
+        <br><br>
+        
     </body>
 </html>

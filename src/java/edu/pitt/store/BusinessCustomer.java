@@ -8,6 +8,7 @@ package edu.pitt.store;
 import edu.pitt.utilities.DbUtilities;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -54,6 +55,31 @@ public class BusinessCustomer {
                 + "VALUES ('"+this.customerID+"', '"+this.companyName+"', '"+this.category+"', '"+this.income+"' )"; 
         db.executeQuery(sql);
     }
+    
+    
+    public ArrayList<Product> findProductByName(String name) {
+        ArrayList<Product> matchedProductList = new ArrayList<Product>();
+        db = new DbUtilities();
+        try {
+            //select product by name
+            String sql = "select * from department_store.product where name like '%" + name + "%'";
+            ResultSet rs = db.getResultSet(sql);
+            while (rs.next()) {
+                int productID = rs.getInt("productID");
+                Product product = new Product(productID);
+                matchedProductList.add(product);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Product.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            db.closeDbConnection();
+        }
+            return matchedProductList;
+    }
+
+    
+    
+    
 
     public int getCustomerID() {
         return customerID;

@@ -65,6 +65,9 @@
             <div align="center">
             <a href="index.html">
                 <button class="btn btn-large" type="button">Back to Main Page~</button>
+            </a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="register_home_customer.jsp">
+                <button class="btn btn-large" type="button">Register First~</button>
             </a>
             </div>
             

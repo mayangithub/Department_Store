@@ -3,11 +3,11 @@ package org.apache.jsp;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import edu.pitt.store.Customer;
 import edu.pitt.store.Order;
 import java.util.ArrayList;
-import edu.pitt.store.Customer;
 
-public final class home_005fcustomer_005fsearchorder_jsp extends org.apache.jasper.runtime.HttpJspBase
+public final class business_005fcustomer_005fsearchorder_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
 
   private static final JspFactory _jspxFactory = JspFactory.getDefaultFactory();
@@ -51,8 +51,8 @@ public final class home_005fcustomer_005fsearchorder_jsp extends org.apache.jasp
       out.write("\n");
       out.write("\n");
 
-    if(session.getAttribute("homecustomer")==null){
-        response.sendRedirect("login_home_customer.jsp");
+    if(session.getAttribute("businessCustomer")==null){
+        response.sendRedirect("login_business_customer.jsp");
     }
 
       out.write("\n");
@@ -60,16 +60,16 @@ public final class home_005fcustomer_005fsearchorder_jsp extends org.apache.jasp
       out.write("<html>\n");
       out.write("    <head>\n");
       out.write("        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n");
-      out.write("        <title>Home Customer Search Orders</title>\n");
+      out.write("        <title>Business Customer Search Orders</title>\n");
       out.write("        <link rel=\"stylesheet\" href=\"bootstrap.min.css\">\n");
       out.write("        <link rel=\"stylesheet\" href=\"bootstrap-theme.min.css\">\n");
       out.write("    </head>\n");
       out.write("    <body>\n");
-      out.write("        <h1>Welcome! For Home Customer:</h1>\n");
+      out.write("        <h1>Welcome! For Business Customer:</h1>\n");
       out.write("        <!---------------Search Orders by Time Period, Product ID, or Order ID ---------------------->\n");
       out.write("        <h3 align=\"center\">Search for Orders</h3>\n");
       out.write("        <div align=\"center\">\n");
-      out.write("            <form method=\"get\" action=\"home_customer_searchorder.jsp\" >\n");
+      out.write("            <form method=\"get\" action=\"business_customer_searchorder.jsp\" >\n");
       out.write("                <label>Time period: </label>\n");
       out.write("                <select name=\"timePeriod\" class=\"form-control\">\n");
       out.write("                    <option value=\"1000\" selected=\"selected\"> All Orders </option>\n");
@@ -99,15 +99,14 @@ public final class home_005fcustomer_005fsearchorder_jsp extends org.apache.jasp
                             if(request.getParameter("orderID")!=null ){
                                 orderID = Integer.parseInt(request.getParameter("orderID"));
                                 System.out.println("orderID: "+orderID);
-                            }else{
-                                if(request.getParameter("timePeriod")!=null){
-                                    period = Integer.parseInt(request.getParameter("timePeriod"));
-                                    System.out.println("Period: "+period);
-                                    if(request.getParameter("productID")!=null){
-                                        productID = Integer.parseInt(request.getParameter("productID"));
-                                        System.out.println("productID"+productID);
-                                    }
-                                }
+                            }
+                            if(request.getParameter("timePeriod")!=null){
+                                period = Integer.parseInt(request.getParameter("timePeriod"));
+                                System.out.println("Period: "+period);
+                            }
+                            if(request.getParameter("productID")!=null){
+                                productID = Integer.parseInt(request.getParameter("productID"));
+                                System.out.println("productID"+productID);
                             }
 
                         if(customer.customerFindOrder(customerID, period, productID, orderID)!=null){
@@ -153,12 +152,11 @@ public final class home_005fcustomer_005fsearchorder_jsp extends org.apache.jasp
       out.write("            </a>\n");
       out.write("            &nbsp;&nbsp;&nbsp;&nbsp;\n");
       out.write("            \n");
-      out.write("            <a href=\"login_home_customer.jsp\">\n");
+      out.write("            <a href=\"login_business_customer.jsp\">\n");
       out.write("                        <button class=\"btn btn-large\" type=\"button\">Back to Login Page~</button>\n");
       out.write("            </a>\n");
       out.write("        </div>\n");
       out.write("        <br><br>\n");
-      out.write("        \n");
       out.write("    </body>\n");
       out.write("</html>\n");
     } catch (Throwable t) {

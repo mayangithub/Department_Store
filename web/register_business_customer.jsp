@@ -37,8 +37,8 @@
                 <input name="companyName" type="text" placeholder="Company Name" required/></p><br>
                 <p>Category: 
                 <input type="text" name='category' placeholder="Company Category" required/></p><br>
-                <p>Income: 
-                <input type='number' name="income" placeholder="Numeric Value" min="100" max="100000000" required/> Thousand</p><br>
+                <label>Income: </label>
+                <input type='number' name="income" placeholder="Numeric Value" min="100" max="100000000" required class='form-control'/> Thousand<br>
 
                 <br>
                 <button class="btn btn-large" type="submit" value="Submit">Submit</button>

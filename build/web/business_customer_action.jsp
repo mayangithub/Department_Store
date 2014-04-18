@@ -4,17 +4,20 @@
     Author     : yanma
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="edu.pitt.store.Customer"%>
+<%@page import="edu.pitt.store.BusinessCustomer"%>
 <%@page import="java.util.Date"%>
 <%@page import="edu.pitt.store.Product"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="edu.pitt.utilities.DbUtilities"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<%/*
+<%
     if(session.getAttribute("businessCustomer")==null){
         response.sendRedirect("login_business_customer.jsp");
     }
-        */
+    
 %>
 <html>
     <head>
@@ -27,62 +30,71 @@
         <h1 align="center">Welcome! For Business Customer:</h1>
         <h3 align="center">Browse product</h3>
         <div align="center" >
-            <form method="get" action="" width="50%">
-                <p>Category of Products: </p>
+            <form method="post" action="" >
+                <label>Category of Products: </label>
                 
-                    <select name="category" class="col-xs-2">
+                    <select name="category" class="form-control">
+                        <option value="all" selected="selected">All</option>
                         <option value="Men's Clothing">Men's Clothing</option>
                         <option value="Women's Clothing">Women's Clothing</option>
                         <option value="kids Clothing">Kids Clothing</option>
                         <option value="Handbags">Handbags</option>
                         <option value="Shoes">Shoes</option>
-                    </select>
+                    </select><br><br>
                     <input type="submit" value="Submit Query" class="btn btn-default"/>
                 </form>
             
         </div>
-        <br><br><br>
+        <br>
         <%
-            String sql = "select * from department_store.product where category = 'kids Clothing'";
-            DbUtilities db = new DbUtilities();
-            ResultSet rs = db.getResultSet(sql);
-            out.println("<table align='center' border='2'>");
+            BusinessCustomer businessCustomer = (BusinessCustomer) session.getAttribute("businessCustomer");
+            if(request.getParameter("category")!=null){
+                String category = request.getParameter("category");
+                int customerID = Integer.parseInt(session.getAttribute("customerID").toString());
+                System.out.println(customerID);
+                Customer customer = new Customer(customerID);
+                ArrayList<Product> productList = customer.customerFindProductByCategory(category);
+                out.println("<table align='center' border='2' class='table table-hover'>");
                 out.println("<tr>");
-                out.println("<th>Product ID</th>");   
-                out.println("<th>Product name</th>");
-                out.println("<th>Category</th>");
-                out.println("<th>Inventory</th>");
-                out.println("<th>Price</th>");
+                out.println("<th> Product ID </th>");   
+                out.println("<th> Product name </th>");
+                out.println("<th> Category </th>");
+                out.println("<th> Inventory </th>");
+                out.println("<th> Price </th>");
                 out.println("</tr>");
-            while(rs.next()){
-                int productID = rs.getInt("productID");
-                Product product = new Product(productID);
-                out.println("<tr>");
-                out.println("<td>"+product.getProductID()+"</td>");
-                out.println("<td>"+product.getName()+"</td>");
-                out.println("<td>"+product.getCategory()+"</td>");
-                out.println("<td>"+product.getInventory()+"</td>");
-                out.println("<td>"+product.getPrice()+"</td>");
-                out.println("</tr>");
-                
+
+                for(Product product: productList){
+                    out.println("<tr>");
+                    out.println("<td> "+product.getProductID()+" </td>");
+                    out.println("<td> "+product.getName()+" </td>");
+                    out.println("<td> "+product.getCategory()+" </td>");
+                    out.println("<td> "+product.getInventory()+" </td>");
+                    out.println("<td> "+product.getPrice()+" </td>");
+                    out.println("</tr>");
+                }
+
+                out.println("</table>");
+
+
             }
-            out.println("</table>");
-        
         %>
-        <br><br><br><br><br>
+        <br><br>
         
         <h3 align="center">Search Product</h3>
         <div align="center">
-            <form method="get" action="" class="form-horizontal">
-            <p>Product name:
-                <input type="text" name="productName" placeholder="Product Name" class="form-control"/>（vague search）</p>
+            <form method="post" action="" class="form-horizontal">
+                <label>Product name: </label>
+                <input type="text" name="productName" placeholder="Product Name" class="form-control"  size="100" required/>（vague search）<br><br>
             <input type="submit" value="Submit Query" class="btn btn-default"/>
             </form>
         </div>
         <br><br>
-        <%sql = "select * from department_store.product where name like '%d%'";;
-            rs = db.getResultSet(sql);
-            out.println("<table align='center' border='2'>");
+        <%
+            businessCustomer = (BusinessCustomer) session.getAttribute("businessCustomer");
+            if(request.getParameter("productName")!=null){
+                String name = request.getParameter("productName");
+                ArrayList<Product> productList = businessCustomer.findProductByName(name);
+                out.println("<table align='center' border='2'  class='table table-hover'>");
                 out.println("<tr>");
                 out.println("<th>Product ID</th>");   
                 out.println("<th>Product name</th>");
@@ -90,27 +102,29 @@
                 out.println("<th>Inventory</th>");
                 out.println("<th>Price</th>");
                 out.println("</tr>");
-            while(rs.next()){
-                int productID = rs.getInt("productID");
-                Product product = new Product(productID);
-                out.println("<tr>");
-                out.println("<td>"+product.getProductID()+"</td>");
-                out.println("<td>"+product.getName()+"</td>");
-                out.println("<td>"+product.getCategory()+"</td>");
-                out.println("<td>"+product.getInventory()+"</td>");
-                out.println("<td>"+product.getPrice()+"</td>");
-                out.println("</tr>");
+                
+                for(Product product: productList){
+                    out.println("<tr>");
+                    out.println("<td>"+product.getProductID()+"</td>");
+                    out.println("<td>"+product.getName()+"</td>");
+                    out.println("<td>"+product.getCategory()+"</td>");
+                    out.println("<td>"+product.getInventory()+"</td>");
+                    out.println("<td>"+product.getPrice()+"</td>");
+                    out.println("</tr>");
+                }
+                
+                out.println("</table>");
                 
             }
-            out.println("</table>");
-            %>
+            
+        %>
         
         <br><br><br><br>
         <h3 align="center">Search Product</h3>
         <div align="center">
-            <form method="get" action="" class="form-horizontal">
-                <p>Product ID: 
-                <input type="text" value="" name="productID" placeholder="Product ID" class="form-control"/></p>
+            <form method="post" action="" class="form-horizontal">
+                <label>Product ID: &nbsp;</label>
+                <input type="number" value="" name="productID" size="120" placeholder="Product ID" required class="form-control"/>（precise search） <br><br>
                 <input type="submit" value="Submit Query"  class="btn btn-default"/>
             </form>
             
@@ -120,7 +134,8 @@
             if(request.getParameter("productID")!=null){
                 int productID = Integer.parseInt(request.getParameter("productID"));
                 Product product = new Product(productID);
-                out.println("<table align='center' border='2'>");
+                
+                out.println("<table align='center' border='2' class='table table-hover'>");
                 out.println("<tr>");
                 out.println("<th>Product ID</th>");   
                 out.println("<th>Product name</th>");
@@ -129,89 +144,46 @@
                 out.println("<th>Price</th>");
                 out.println("</tr>");
                 
-                out.println("<tr>");
-                out.println("<td>"+product.getProductID()+"</td>");
-                out.println("<td>"+product.getName()+"</td>");
-                out.println("<td>"+product.getCategory()+"</td>");
-                out.println("<td>"+product.getInventory()+"</td>");
-                out.println("<td>"+product.getPrice()+"</td>");
-                out.println("</tr>");
+                
+                if(product.getProductID()!=0){
+                    out.println("<tr>");
+                    out.println("<td>"+product.getProductID()+"</td>");
+                    out.println("<td>"+product.getName()+"</td>");
+                    out.println("<td>"+product.getCategory()+"</td>");
+                    out.println("<td>"+product.getInventory()+"</td>");
+                    out.println("<td>"+product.getPrice()+"</td>");
+                    out.println("</tr>");
+                }
+                
                 
             
             out.println("</table>");
             
             }
-            
         %>
         
         <br><br>
-        <br><br>
-        <h3 align="center">Search for Orders</h3>
+        
+        <!---------------------Search for order history --------------------------------------->
+        <h1 align="center">Search for Orders</h1>
         <div align="center">
-            <form method="get" action="" >
-                <p>Time period: 
-                <select name="timePeriod" class="form-control">
-                    <option value="30">30 Days</option>
-                    <option value="60">60 Days</option>
-                    <option value="90">90 Days</option>
-                    <option value="1000"> All </option>
-                </select></p>
-                <p>Product ID: 
-                    <input value="" name="productID" type="text" placeholder="Product ID" class="form-control"/></p>
-                <p>Order ID: 
-                    <input type="text" name="orderID" value="" placeholder="Order ID" class="form-control"/></p>
-                <input type="submit" value="Submit Query" class="btn btn-default"/>
-                
-            </form>
+            <a href="business_customer_searchorder.jsp">
+                <button class="btn btn-large" type="button">Search your order history~</button>
+            </a>
         </div>
-        <br><br><br>
-        <%
-            int customerID = 8006;
-            int period = 1000;
-            sql = "select orders.orderID as order_ID, orders.date as order_date, order_detail.productID as product_ID,"
-                    + " order_detail.price as price, order_detail.cost as cost, order_detail.quantity as quantity, "
-                    + "orders.salesID as salesman_ID, orders.customerID as customer_ID "
-                    + "from department_store.orders, department_store.order_detail "
-                    + "where orders.customerID = " + customerID + " "
-                    + "and date BETWEEN SYSDATE() - INTERVAL " + period + " DAY AND SYSDATE() "
-                    + "and orders.orderID = order_detail.orderID "
-                    + "order by date DESC";
-            rs = db.getResultSet(sql);
-            out.println("<table align='center' border='2'>");
-                out.println("<tr>");
-                out.println("<th>Order ID</th>");  
-                out.println("<th>Customer ID</th>");
-                out.println("<th>Salesman ID</th>");
-                out.println("<th>Order Date</th>");
-                out.println("<th>Product ID</th>");
-                out.println("<th>Price</th>");
-                out.println("<th>Quantity</th>");
-                out.println("</tr>");
-            while(rs.next()){
-                int orderID = rs.getInt("order_ID");
-                int salesID = rs.getInt("salesman_ID");
-                Date date = rs.getDate("order_date");
-                int productID = rs.getInt("product_ID");
-                double price = rs.getDouble("price");
-                //double cost = rs.getDouble("cost");
-                int quantity = rs.getInt("quantity");
-                out.println("<tr>");
-                out.println("<td>"+orderID+"</td>");
-                out.println("<td>"+customerID+"</td>");
-                out.println("<td>"+salesID+"</td>");
-                out.println("<td>"+date+"</td>");
-                out.println("<td>"+productID+"</td>");
-                out.println("<td>"+price+"</td>");
-                out.println("<td>"+quantity+"</td>");
-                out.println("</tr>");
-                
-                
-            }
-            out.println("</table>");
-            
-            
-        %>
         
-        <br><br><br><br><br>
+        
+        
+        <br><br>
+        <div align="center">
+            <a href="index.html">
+                <button class="btn btn-large" type="button">Back to Main Page~</button>
+            </a>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            
+            <a href="login_business_customer.jsp">
+                        <button class="btn btn-large" type="button">Back to Login Page~</button>
+            </a>
+        </div><br><br><br>
     </body>
 </html>

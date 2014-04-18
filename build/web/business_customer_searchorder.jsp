@@ -1,32 +1,32 @@
 <%-- 
-    Document   : home_customer_searchorder
-    Created on : Apr 17, 2014, 6:33:28 PM
+    Document   : business_customer_searchorder
+    Created on : Apr 18, 2014, 8:10:36 AM
     Author     : yanma
 --%>
 
+<%@page import="edu.pitt.store.Customer"%>
 <%@page import="edu.pitt.store.Order"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="edu.pitt.store.Customer"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    if(session.getAttribute("homecustomer")==null){
-        response.sendRedirect("login_home_customer.jsp");
+    if(session.getAttribute("businessCustomer")==null){
+        response.sendRedirect("login_business_customer.jsp");
     }
 %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Home Customer Search Orders</title>
+        <title>Business Customer Search Orders</title>
         <link rel="stylesheet" href="bootstrap.min.css">
         <link rel="stylesheet" href="bootstrap-theme.min.css">
     </head>
     <body>
-        <h1>Welcome! For Home Customer:</h1>
+        <h1>Welcome! For Business Customer:</h1>
         <!---------------Search Orders by Time Period, Product ID, or Order ID ---------------------->
         <h3 align="center">Search for Orders</h3>
         <div align="center">
-            <form method="get" action="home_customer_searchorder.jsp" >
+            <form method="get" action="business_customer_searchorder.jsp" >
                 <label>Time period: </label>
                 <select name="timePeriod" class="form-control">
                     <option value="1000" selected="selected"> All Orders </option>
@@ -64,8 +64,6 @@
                                 productID = Integer.parseInt(request.getParameter("productID"));
                                 System.out.println("productID"+productID);
                             }
-                                
-                            
 
                         if(customer.customerFindOrder(customerID, period, productID, orderID)!=null){
                             orderList = customer.customerFindOrder(customerID, period, productID, orderID);
@@ -109,11 +107,10 @@
             </a>
             &nbsp;&nbsp;&nbsp;&nbsp;
             
-            <a href="login_home_customer.jsp">
+            <a href="login_business_customer.jsp">
                         <button class="btn btn-large" type="button">Back to Login Page~</button>
             </a>
         </div>
         <br><br>
-        
     </body>
 </html>

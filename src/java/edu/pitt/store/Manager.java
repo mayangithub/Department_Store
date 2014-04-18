@@ -14,8 +14,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Manager Class
  * @author yanma
+ * 
+ * 1. find manager
+ * 2. Aggregation method: (1)Top 10   (2)list all
+ * 3. 
  */
 public class Manager {
     private int managerID;
@@ -29,6 +33,7 @@ public class Manager {
     
     public Manager(int managerID){
         try {
+            db = new DbUtilities();
             //select manager
             String sql = "select * from department_store.manager where managerID = '"+managerID+"'";
             ResultSet rs = db.getResultSet(sql);
@@ -50,6 +55,7 @@ public class Manager {
     //这个方法也写入jsp页面   
     public void mgrViewByOrderAggre(String customerCategory, int period, int amount, String orderCondition, String aggreCondition){
         String sql = "";
+        db = new DbUtilities();
         if(amount==10){
             try {
                 //where customer.kind=customerCategory
@@ -148,12 +154,14 @@ public class Manager {
     }
     //这个方法的内容在jsp里写
     //在while循环里   得到值 然后写入各个column
-    public void mgrViewByOrderProduct(String customerCategory, int period, String productName, String orderCondition){
-        ArrayList<Order> matchedOrderList = new ArrayList<Order>();
+    public String[] mgrViewByOrderProduct(String customerCategory, int period, String productName, String orderCondition){
+        String[] ranklist = new String[30000];
+        db = new DbUtilities();
         try {
+            //productName required
             //where customer.kind=customerCategory and product.name=productName
             //Order by orderCondition
-            String sql = "select orders.customerID, "+
+            String sql = "select orders.customerID, orders.orderID"+
                     "sum(quantity) as quantity, "+
                     "sum(order_detail.price*order_detail.quantity) as total, "+
                     "sum((order_detail.price-order_detail.cost)*order_detail.quantity) as profit "+
@@ -164,9 +172,9 @@ public class Manager {
                     "and order_detail.productID = product.productID "+
                     "and product.name = '"+productName+"' "+
                     "and customer.kind = '"+customerCategory+"' "+
-                    "and orders.date BETWEEN SYSDATE() - INTERVAL '"+period+"' DAY AND SYSDATE() "+
+                    "and orders.date BETWEEN SYSDATE() - INTERVAL "+period+" DAY AND SYSDATE() "+
                     "group by orders.customerID "+
-                    "order by '"+orderCondition+"' DESC";
+                    "order by "+orderCondition+" DESC";
             
             ResultSet rs = db.getResultSet(sql);
             while(rs.next()){
@@ -174,6 +182,8 @@ public class Manager {
                 int quantity = rs.getInt("quantity");
                 double total = rs.getDouble("total");
                 double profit = rs.getDouble("profit");
+                int orderID = rs.getInt("orders.orderID");
+                
             }
             
         } catch (SQLException ex) {
@@ -181,21 +191,67 @@ public class Manager {
         } finally {
             db.closeDbConnection();
         }
+        return ranklist;
     }
     
     public void updateInventory(int productID, int inventory){
+        db = new DbUtilities();
         //update product inventory
         //find product by productID
-        String sql = "UPDATE department_store.product SET inventory='"+inventory+"'"+
-		"WHERE productID = '"+productID+"'";
+        String sql = "UPDATE department_store.product SET inventory="+inventory+" "+
+		"WHERE productID = "+productID+"";
         
         db.executeQuery(sql);
         
     }
     
-    public void addProduct(String name, String category, int inventory, double price, double cost){
+    public Product addProduct(String name, String category, int inventory, double price, double cost){
         Product product = new Product(name, category, inventory, price, cost);
+        return product;
     }
+    
+    
+    public int findProductID(String name, String category, int inventory, double price, double cost){
+        int productID=0;
+        try {
+            db = new DbUtilities();
+            String sql = "SELECT productID FROM department_store.product where name = '"+name+"' and category = \""+category+"\" and inventory = "
+                    +inventory+" and price= "+price+" and cost= "+cost+" ";
+            ResultSet rs = db.getResultSet(sql);
+            if(rs.next()){
+                productID = rs.getInt("productID");
+                
+            }else{
+                productID = 0;
+            }
+            
+            } catch (SQLException ex) {
+            Logger.getLogger(Product.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return productID;
+    }
+
+    
+    
+    //find product by id
+    public Product findProductByProductID(int productID){
+        db = new DbUtilities();
+        Product product = null;
+        try {
+            String sql = "SELECT productID FROM department_store.product where productID = "+productID;
+            ResultSet rs = db.getResultSet(sql);
+            if(rs.next()){
+                productID = rs.getInt("productID");
+                System.out.println(productID);
+                product = new Product(productID);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return product;
+    }
+    
+    
 
     public int getManagerID() {
         return managerID;

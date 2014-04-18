@@ -24,10 +24,10 @@
         <h3>Your status is: <em>Salesman</em>.</h3>
         <div align="center">
             <form method="post" action="login_salesman.jsp">
-                <p>Email: 
-                <input type="email" id="username" name="username" placeholder="mail@domain.com" required/></p><br>
-                <p>Password: 
-                    <input type="password" id="password" name="password" placeholder="Password" required /></p><br>
+                <label>Email: &nbsp;</label>
+                    <input type="email" id="username" name="username"  class="form-control" placeholder="mail@domain.com" required/><br><br>
+                    <label>Password: &nbsp;</label>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Password" required /><br><br>
 
                 <br>
                 <button class="btn btn-large" type="submit" value="Submit">Submit</button>
@@ -70,7 +70,7 @@
             <div align="center">
             <a href="index.html">
                 <button class="btn btn-large" type="button">Back to Main Page~</button>
-            </a>
+            </a> 
             </div>
             
             <br><br>

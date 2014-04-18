@@ -28,11 +28,11 @@
         <link rel="stylesheet" href="bootstrap-theme.min.css">
     </head>
     <body >
-        <h1 align="center">Welcome! For Home Customer:</h1>
+        <h1>Welcome! For Home Customer:</h1>
         <h3 align="center">Browse product</h3>
     <!---------------Browse Products by Category ---------------------->
         <div align="center">
-            <form method="get" action="home_customer_action.jsp" >
+            <form method="post" action="home_customer_action.jsp" >
                 <label>Category of Products: &nbsp;</label>
                 <select name="category" class="form-control" >
                     
@@ -48,6 +48,7 @@
             
         </div>
         <br>
+        
         <%
             
             
@@ -87,9 +88,9 @@
     <!---------------Browse Products by Product Name ---------------------->    
         <h3 align="center">Search Product</h3>
         <div align="center">
-            <form method="get" action="home_customer_action.jsp">
-                <label>Product name: &nbsp;
-                    <input type="text" name="productName" placeholder="Product Name" class="form-control" size="100" required/>（vague search）</label><br><br>
+            <form method="post" action="home_customer_action.jsp">
+                <label>Product name: &nbsp;</label>
+                    <input type="text" name="productName" placeholder="Product Name" class="form-control" size="100" required/>（vague search）<br><br>
             <input type="submit" value="Submit Query" class="btn btn-default"/>
             </form>
         </div>
@@ -129,9 +130,9 @@
     <!---------------Browse Products by Product ID ---------------------->    
         <h3 align="center">Search Product</h3>
         <div align="center">
-            <form method="get" action="home_customer_action.jsp">
-                <label>Product ID: &nbsp;
-                    <input type="number" name="productID" placeholder="Product ID" size="120" class="form-control" required/>（precise search） </label><br><br>
+            <form method="post" action="home_customer_action.jsp">
+                <label>Product ID: &nbsp; </label>
+                    <input type="number" name="productID" placeholder="Product ID" size="120" class="form-control" required/>（precise search） <br><br>
                 <input type="submit" value="Submit Query"  class="btn btn-default"/>
             </form>
             
@@ -171,6 +172,7 @@
         %>
     
         <br><br>
+        <!---------------------Search for order history --------------------------------------->
         <h1 align="center">Search for Orders</h1>
         <div align="center">
             <a href="home_customer_searchorder.jsp">
@@ -182,6 +184,11 @@
         <div align="center">
             <a href="index.html">
                 <button class="btn btn-large" type="button">Back to Main Page~</button>
+            </a>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            
+            <a href="login_home_customer.jsp">
+                        <button class="btn btn-large" type="button">Back to Login Page~</button>
             </a>
         </div>
         <br><br>

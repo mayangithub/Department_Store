@@ -32,8 +32,9 @@ public class Product {
 
     public Product(int productID) {
         try {
+            db = new DbUtilities();
             //select product by productID
-            String sql = "select * from department_store.product where productID = '" + productID + "'";
+            String sql = "select * from department_store.product where productID = " + productID + " ";
             ResultSet rs = db.getResultSet(sql);
             while (rs.next()) {
                 this.productID = rs.getInt("productID");
@@ -53,6 +54,7 @@ public class Product {
     
     
     public Product(String name, String category, int inventory, double price, double cost){
+        db = new DbUtilities();
         //insert into product table a new product
         this.name = name;
         this.category = category;
@@ -60,12 +62,22 @@ public class Product {
         this.price = price;
         this.cost = cost;
         String sql = "INSERT INTO department_store.product (name, category, inventory, price, cost) "+
-        "VALUES ('"+this.name+"', '"+this.category+"', '"+this.inventory+"', '"+this.price+"', '"+this.cost+"')";
+        "VALUES ('"+this.name+"', \""+this.category+"\", "+this.inventory+", "+this.price+", "+this.cost+")";
         db.executeQuery(sql);
     }
 
+    
+    
+    
+    public void updateInventory(int productID, int inventory){
+        db = new DbUtilities();
+        String sql = "UPDATE department_store.product SET inventory="+inventory+" WHERE productID="+productID+" ;";
+        db.executeQuery(sql);
+    }
+    
     public ArrayList<Product> findProductByName(String name) {
         ArrayList<Product> matchedProductList = new ArrayList<Product>();
+        db = new DbUtilities();
         try {
             //select product by name
             String sql = "select * from department_store.product where name like '%" + name + "%'";
@@ -82,16 +94,21 @@ public class Product {
         }
             return matchedProductList;
     }
-
+    
+    
+    
+    
+    
     public ArrayList<Product> findProductByCategory(String category) {
         ArrayList<Product> matchedProductList = new ArrayList<Product>();
         String sql = "";
+        db = new DbUtilities();
         try {
             //select product by category
             if(category.equals("all")){
                 sql = "select * from department_store.product;";
             }else {
-                sql = "select * from department_store.product where category = '"+category+"'";
+                sql = "select * from department_store.product where category = \""+category+"\"";
             }
             ResultSet rs = db.getResultSet(sql);
             while(rs.next()){
@@ -155,5 +172,9 @@ public class Product {
     public void setCost(double cost) {
         this.cost = cost;
     }
+    
+    
+    
+    
 
 }
