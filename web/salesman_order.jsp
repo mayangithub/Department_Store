@@ -67,8 +67,8 @@
                         session.setAttribute("salesID", salesID);
                         Salesman salesman = (Salesman) session.getAttribute("salesman");
                         salesman.placeOrder(salesID, productID, customerID, quantity);
-
-
+                        out.println("<script language='javascript'>alert('Place order successfully!~')</script>");
+                        out.println("<h1 align='center'>Order Confirmation </h1>");
                         out.println("<table border='2'  align = 'center' class='table table-striped, table table-hover'>");
                         out.println("<tr>");
                         out.println("<th>Purchase Option</th>");

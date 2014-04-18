@@ -24,10 +24,10 @@
         <h3>Your status is: <em>Manager</em>.</h3>
         <div align="center">
             <form method="post" action="login_manager.jsp">
-                <p>Email: 
-                <input type="email" id="username" name="username" placeholder="mail@domain.com" required/></p><br>
-                <p>Password: 
-                    <input type="password" id="password" name="password" placeholder="Password" required /></p><br>
+                <label>Email: &nbsp;</label>
+                <input type="email" id="username" name="username" placeholder="mail@domain.com" required class="form-control"/><br><br>
+                <label>Password: &nbsp;</label>
+                <input type="password" id="password" name="password" placeholder="Password" required class="form-control"/><br><br>
 
                 <br>
                 <button class="btn btn-large" type="submit" value="Submit">Submit</button>
