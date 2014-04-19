@@ -26,10 +26,10 @@
         <h3>Your status is: <em>Business Customer</em>.</h3>
         <div align="center">
             <form method="post" action="login_business_customer.jsp">
-                <p>Email: 
-                <input type="email" id="username" name="username" placeholder="mail@domain.com" /></p><br>
-                <p>Password: 
-                <input type="password" id="password" name="password" placeholder="Password" /></p><br>
+                <label>Email: &nbsp;</label>
+                <input type="email" id="username" name="username" placeholder="mail@domain.com" required class="form-control"/><br><br>
+                <label>Password: &nbsp;</label>
+                <input type="password" id="password" name="password" placeholder="Password" required class="form-control" /><br><br>
 
                 <br>
                 <button class="btn btn-large" type="submit" value="Submit">Submit</button>

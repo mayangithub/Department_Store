@@ -1,0 +1,13 @@
+SMAP
+register_005fbusiness_005fcustomer_jsp.java
+JSP
+*S JSP
+*F
++ 0 register_business_customer.jsp
+register_business_customer.jsp
+*L
+5,10:47
+14,39:57
+53,38:97
+90,15:135
+*E

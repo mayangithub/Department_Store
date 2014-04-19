@@ -68,10 +68,10 @@ public final class login_005fbusiness_005fcustomer_jsp extends org.apache.jasper
       out.write("        <h3>Your status is: <em>Business Customer</em>.</h3>\n");
       out.write("        <div align=\"center\">\n");
       out.write("            <form method=\"post\" action=\"login_business_customer.jsp\">\n");
-      out.write("                <p>Email: \n");
-      out.write("                <input type=\"email\" id=\"username\" name=\"username\" placeholder=\"mail@domain.com\" /></p><br>\n");
-      out.write("                <p>Password: \n");
-      out.write("                <input type=\"password\" id=\"password\" name=\"password\" placeholder=\"Password\" /></p><br>\n");
+      out.write("                <label>Email: &nbsp;</label>\n");
+      out.write("                <input type=\"email\" id=\"username\" name=\"username\" placeholder=\"mail@domain.com\" required class=\"form-control\"/><br><br>\n");
+      out.write("                <label>Password: &nbsp;</label>\n");
+      out.write("                <input type=\"password\" id=\"password\" name=\"password\" placeholder=\"Password\" required class=\"form-control\" /><br><br>\n");
       out.write("\n");
       out.write("                <br>\n");
       out.write("                <button class=\"btn btn-large\" type=\"submit\" value=\"Submit\">Submit</button>\n");

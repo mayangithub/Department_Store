@@ -25,19 +25,19 @@
         <h1 align="center">Welcome to INFSCI 2710 Department Store</h1>
         <div align="center">
             <form method="post" action="register_business_customer.jsp">
-                <p>Email: 
-                <input type="email" id="email" name="email" placeholder="mail@domain.com" required/></p><br>
-                <p>Password: 
-                <input type="password" id="password" name="password" placeholder="Password" required/></p><br>
-                <p>Name: 
-                <input type="text" id="name" name="name" placeholder="Real Name" required/></p><br>
-                <p>Address: 
-                <input type="text" id="address" name="address" placeholder="Address" required/></p><br>
-                <p>Company Name: 
-                <input name="companyName" type="text" placeholder="Company Name" required/></p><br>
-                <p>Category: 
-                <input type="text" name='category' placeholder="Company Category" required/></p><br>
-                <label>Income: </label>
+                <label>Email: &nbsp;</label>
+                <input type="email" id="email" name="email" placeholder="mail@domain.com" required class="form-control"/><br><br>
+                <label>Password: &nbsp;</label>
+                <input type="password" id="password" name="password" placeholder="Password" required class="form-control"/><br><br>
+                <label>Name: &nbsp;</label>
+                <input type="text" id="name" name="name" placeholder="Real Name" required class="form-control"/><br><br>
+                <label>Address: &nbsp;</label>
+                <input type="text" id="address" name="address" placeholder="Address" required class="form-control"/><br><br>
+                <label>Company Name: &nbsp;</label>
+                <input name="companyName" type="text" placeholder="Company Name" required class="form-control"/><br><br>
+                <label>Category: &nbsp;</label>
+                <input type="text" name='category' placeholder="Company Category" required class="form-control"/><br><br>
+                <label>Income: &nbsp;</label>
                 <input type='number' name="income" placeholder="Numeric Value" min="100" max="100000000" required class='form-control'/> Thousand<br>
 
                 <br>
